@@ -1,8 +1,14 @@
-<img src="assets/header.svg" alt="antharmaya labs — agent and systems infrastructure" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/header-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/header-light.svg" alt="antharmaya labs — agent and systems infrastructure" width="100%">
+</picture>
 
 [antharmaya.com](https://antharmaya.com) · [stallwatch](https://stallwatch.antharmaya.com) · [rateguard](https://rateguard.antharmaya.com)
 
-<img src="assets/s-about.svg" alt="about" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-light.svg" alt="about" width="100%">
+</picture>
 
 > AI agents can run your systems now. Almost nothing tells them where to stop.
 
@@ -12,7 +18,10 @@ kernel-level observability that says what actually happened.
 
 Everything is MIT or Apache, installs in one line, and needs no root.
 
-<img src="assets/s-projects.svg" alt="projects" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-projects-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-projects-light.svg" alt="projects" width="100%">
+</picture>
 
 Seven tools, one job.
 
@@ -43,11 +52,20 @@ Claude Code, Codex, Cursor, Cline and Aider alike.
 The kernel already records what stalled. This names the systemd unit, then the
 process, and whether it was the cause or the victim.
 
-<img src="assets/s-stats.svg" alt="stats" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-stats-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-stats-light.svg" alt="stats" width="100%">
+</picture>
 
-<img src="assets/stats.svg" alt="languages by bytes written, and the year" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/stats-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/stats-light.svg" alt="languages by bytes written, and the year" width="100%">
+</picture>
 
-<img src="assets/s-about-this-page.svg" alt="about this page" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-this-page-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-this-page-light.svg" alt="about this page" width="100%">
+</picture>
 
 Every graphic here is generated, not embedded from anyone else's server.
 `refresh.py` pulls the numbers from the GitHub API, `make_assets.py` draws the
@@ -57,3 +75,7 @@ Badge and stat-card services rate-limit, go down, change their rendering
 without telling you, and see the traffic of everyone who visits. A studio that
 ships zero-dependency infrastructure should not open its page with ten
 dependencies.
+
+Drawn twice, light and dark, and picked by `prefers-color-scheme`. Colours are
+PhotoSelect's own tokens, so this page, the products and the tools are one
+system rather than three.

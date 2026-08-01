@@ -23,12 +23,32 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets"
 DATA = ROOT / "data"
 
-VOID = "#0a0c11"
-LINE = "#1c2330"
-DIM = "#67748a"
-TEXT = "#c9d1dd"
-BRIGHT = "#e8edf5"
-EMBER = "#ff7a45"
+# PhotoSelect's system, converted from its oklch tokens. Paper and ink with one
+# blue accent — the same palette the products use, so the profile, the sites
+# and the tools read as one thing rather than three.
+#
+# Both themes are drawn. GitHub honours prefers-color-scheme inside <picture>,
+# and a light panel on a dark profile is a glaring white rectangle. Choosing
+# one theme means choosing which half of readers get the bad version.
+THEMES = {
+    "light": dict(
+        PAPER="#fafcfe",  # --background  oklch(0.99 0.003 250)
+        CARD="#ffffff",   # --card
+        LINE="#e6ebf0",   # --border      oklch(0.92 0.005 250)
+        DIM="#5e646a",    # --muted-fg    oklch(0.50 0.012 250)
+        INK="#0e1216",    # --foreground  oklch(0.18 0.010 250)
+        BLUE="#004fa7",   # --primary     oklch(0.44 0.16 255)
+    ),
+    "dark": dict(
+        PAPER="#0d1117",  # GitHub's own dark canvas, so the card does not float
+        CARD="#0d1117",
+        LINE="#232b34",
+        DIM="#8b949e",
+        INK="#e8edf3",
+        BLUE="#589bff",   # the same hue, lifted for contrast on dark
+    ),
+}
+T = THEMES["light"]
 
 MONO = (
     "ui-monospace,SFMono-Regular,'SF Mono','JetBrains Mono',"
@@ -69,15 +89,15 @@ def banner(title: str, subtitle: str) -> str:
 
     H = 208
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{title}. {total} contributions in the last year.">
-  <rect width="{W}" height="{H}" rx="4" fill="{VOID}"/>
-  <rect width="{W}" height="3" fill="{EMBER}"/>
-  <text x="40" y="54" font-family="{MONO}" font-size="24" font-weight="700" fill="{BRIGHT}">{title}</text>
-  <text x="40" y="78" font-family="{MONO}" font-size="13" fill="{DIM}">{subtitle}</text>
-  <text x="40" y="124" font-family="{MONO}" font-size="34" font-weight="700" fill="{BRIGHT}">{total}</text>
-  <text x="{40 + 21 * len(str(total))}" y="124" font-family="{MONO}" font-size="12" fill="{DIM}">contributions in the last year</text>
-  <text x="{W - 40}" y="124" font-family="{MONO}" font-size="12" fill="{DIM}" text-anchor="end">{stats.get('active_days', 0)} active days  ·  best week {stats.get('best_week', 0)}</text>
-  <polyline points="{spark}" fill="none" stroke="{EMBER}" stroke-width="1.6" opacity="0.9"/>
-  <line x1="40" y1="{base:.0f}" x2="{W - 40}" y2="{base:.0f}" stroke="{LINE}" stroke-width="1"/>
+  <rect width="{W}" height="{H}" rx="4" fill="{T["PAPER"]}" stroke="{T["LINE"]}" stroke-width="1"/>
+  <rect width="{W}" height="3" fill="{T["BLUE"]}"/>
+  <text x="40" y="54" font-family="{MONO}" font-size="24" font-weight="700" fill="{T["INK"]}">{title}</text>
+  <text x="40" y="78" font-family="{MONO}" font-size="13" fill="{T["DIM"]}">{subtitle}</text>
+  <text x="40" y="124" font-family="{MONO}" font-size="34" font-weight="700" fill="{T["INK"]}">{total}</text>
+  <text x="{40 + 21 * len(str(total))}" y="124" font-family="{MONO}" font-size="12" fill="{T["DIM"]}">contributions in the last year</text>
+  <text x="{W - 40}" y="124" font-family="{MONO}" font-size="12" fill="{T["DIM"]}" text-anchor="end">{stats.get('active_days', 0)} active days  ·  best week {stats.get('best_week', 0)}</text>
+  <polyline points="{spark}" fill="none" stroke="{T["BLUE"]}" stroke-width="1.6" opacity="0.95"/>
+  <line x1="40" y1="{base:.0f}" x2="{W - 40}" y2="{base:.0f}" stroke="{T["LINE"]}" stroke-width="1"/>
 </svg>
 """
 
@@ -85,8 +105,8 @@ def banner(title: str, subtitle: str) -> str:
 def section(label: str) -> str:
     """A section rule, the way a CLI delimits its own output."""
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="26" viewBox="0 0 {W} 26" role="img" aria-label="{label}">
-  <text x="0" y="17" font-family="{MONO}" font-size="12" font-weight="700" fill="{EMBER}">{label}</text>
-  <line x1="{len(label) * 7.4 + 14}" y1="12" x2="{W}" y2="12" stroke="{LINE}" stroke-width="1"/>
+  <text x="0" y="17" font-family="{MONO}" font-size="12" font-weight="700" fill="{T["BLUE"]}">{label}</text>
+  <line x1="{len(label) * 7.4 + 14}" y1="12" x2="{W}" y2="12" stroke="{T["LINE"]}" stroke-width="1"/>
 </svg>
 """
 
@@ -102,9 +122,9 @@ def stats_panel() -> str:
         pct = 100 * val / total_bytes
         bar = int((pct / 100) * 300)
         body.append(
-            f'<text x="24" y="{y}" font-family="{MONO}" font-size="12" fill="{TEXT}">{name.lower()}</text>'
-            f'<rect x="150" y="{y - 9}" width="{bar}" height="8" fill="{EMBER}" opacity="0.85" rx="1"/>'
-            f'<text x="470" y="{y}" font-family="{MONO}" font-size="12" fill="{DIM}" text-anchor="end">{pct:.0f}%</text>'
+            f'<text x="24" y="{y}" font-family="{MONO}" font-size="12" fill="{T["DIM"]}">{name.lower()}</text>'
+            f'<rect x="150" y="{y - 9}" width="{bar}" height="8" fill="{T["BLUE"]}" opacity="0.9" rx="1"/>'
+            f'<text x="470" y="{y}" font-family="{MONO}" font-size="12" fill="{T["DIM"]}" text-anchor="end">{pct:.0f}%</text>'
         )
         y += 24
 
@@ -118,34 +138,38 @@ def stats_panel() -> str:
     ry = 78
     for label, val in right:
         body.append(
-            f'<text x="530" y="{ry}" font-family="{MONO}" font-size="12" fill="{DIM}">{label}</text>'
-            f'<text x="{W - 24}" y="{ry}" font-family="{MONO}" font-size="12" font-weight="700" fill="{BRIGHT}" text-anchor="end">{val}</text>'
+            f'<text x="530" y="{ry}" font-family="{MONO}" font-size="12" fill="{T["DIM"]}">{label}</text>'
+            f'<text x="{W - 24}" y="{ry}" font-family="{MONO}" font-size="12" font-weight="700" fill="{T["INK"]}" text-anchor="end">{val}</text>'
         )
         ry += 24
 
     height = max(y, ry) + 16
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{height}" viewBox="0 0 {W} {height}" role="img" aria-label="Language and activity statistics">
-  <rect width="{W}" height="{height}" rx="4" fill="{VOID}" stroke="{LINE}" stroke-width="1"/>
-  <text x="24" y="34" font-family="{MONO}" font-size="11" letter-spacing="1.4" fill="{DIM}">BY BYTES WRITTEN</text>
-  <text x="530" y="34" font-family="{MONO}" font-size="11" letter-spacing="1.4" fill="{DIM}">THE YEAR</text>
-  <line x1="20" y1="48" x2="{W - 20}" y2="48" stroke="{LINE}" stroke-width="1"/>
+  <rect width="{W}" height="{height}" rx="4" fill="{T["CARD"]}" stroke="{T["LINE"]}" stroke-width="1"/>
+  <text x="24" y="34" font-family="{MONO}" font-size="11" letter-spacing="1.4" fill="{T["DIM"]}">BY BYTES WRITTEN</text>
+  <text x="530" y="34" font-family="{MONO}" font-size="11" letter-spacing="1.4" fill="{T["DIM"]}">THE YEAR</text>
+  <line x1="20" y1="48" x2="{W - 20}" y2="48" stroke="{T["LINE"]}" stroke-width="1"/>
   {"".join(body)}
 </svg>
 """
 
 
 def main() -> None:
+    global T
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "header.svg").write_text(
-        banner("harshavardhan beesabathina", "systems and agent infrastructure · tirupati, india")
-    )
-    (OUT / "header-antharmaya.svg").write_text(
-        banner("antharmaya labs", "agent and systems infrastructure · india")
-    )
-    for name in ("about", "stack", "projects", "stats", "about-this-page"):
-        (OUT / f"s-{name}.svg").write_text(section(name.replace("-", " ")))
-    (OUT / "stats.svg").write_text(stats_panel())
-    print(f"wrote {len(list(OUT.glob('*.svg')))} svg files")
+    for theme, palette in THEMES.items():
+        T = palette
+        suffix = f"-{theme}"
+        (OUT / f"header{suffix}.svg").write_text(
+            banner("harshavardhan beesabathina", "systems and agent infrastructure · tirupati, india")
+        )
+        (OUT / f"header-antharmaya{suffix}.svg").write_text(
+            banner("antharmaya labs", "agent and systems infrastructure · india")
+        )
+        for name in ("about", "stack", "projects", "stats", "about-this-page"):
+            (OUT / f"s-{name}{suffix}.svg").write_text(section(name.replace("-", " ")))
+        (OUT / f"stats{suffix}.svg").write_text(stats_panel())
+    print(f"wrote {len(list(OUT.glob('*.svg')))} svg files (light + dark)")
 
 
 if __name__ == "__main__":
