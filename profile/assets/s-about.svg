@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="30" viewBox="0 0 860 30" role="img" aria-label="about">
+  <text x="0" y="20" font-family="ui-monospace,SFMono-Regular,'SF Mono','JetBrains Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="13" fill="#1c2330">──</text>
+  <text x="26" y="20" font-family="ui-monospace,SFMono-Regular,'SF Mono','JetBrains Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="13" font-weight="700" fill="#ff7a45">about</text>
+  <line x1="74.0" y1="15" x2="860" y2="15" stroke="#1c2330" stroke-width="1"/>
+</svg>
