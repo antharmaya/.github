@@ -59,7 +59,26 @@ def contributions() -> dict:
         run = run + 1 if d["contributionCount"] > 0 else 0
         longest = max(longest, run)
 
+    # Keep the per-day grid, not just weekly sums: the ascii calendar needs
+    # weekday position, and a week total cannot be un-summed back into days.
+    grid = []
+    for w in weeks:
+        col = [0] * 7
+        for d in w["contributionDays"]:
+            col[datetime.date.fromisoformat(d["date"]).weekday()] = d["contributionCount"]
+        grid.append(col)
+
+    months = []
+    seen = set()
+    for i, w in enumerate(weeks):
+        first = datetime.date.fromisoformat(w["contributionDays"][0]["date"])
+        if first.month not in seen:
+            seen.add(first.month)
+            months.append([i, first.strftime("%b").lower()])
+
     return {
+        "grid": grid,
+        "months": months,
         "total": cal["totalContributions"],
         "active_days": sum(1 for d in days if d["contributionCount"] > 0),
         "best_week": max(sum(d["contributionCount"] for d in w["contributionDays"]) for w in weeks),

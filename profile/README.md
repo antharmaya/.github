@@ -63,19 +63,6 @@ process, and whether it was the cause or the victim.
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-this-page-dark.svg">
-  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/s-about-this-page-light.svg" alt="about this page" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/calendar-dark.svg">
+  <img src="https://raw.githubusercontent.com/antharmaya/.github/main/profile/assets/calendar-light.svg" alt="a year of daily contributions" width="100%">
 </picture>
-
-Every graphic here is generated, not embedded from anyone else's server.
-`refresh.py` pulls the numbers from the GitHub API, `make_assets.py` draws the
-SVGs, and both are committed to this repository.
-
-Badge and stat-card services rate-limit, go down, change their rendering
-without telling you, and see the traffic of everyone who visits. A studio that
-ships zero-dependency infrastructure should not open its page with ten
-dependencies.
-
-Drawn twice, light and dark, and picked by `prefers-color-scheme`. Colours are
-PhotoSelect's own tokens, so this page, the products and the tools are one
-system rather than three.
