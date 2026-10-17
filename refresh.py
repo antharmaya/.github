@@ -5,21 +5,25 @@ Separate from drawing, so a rate limit or a network failure leaves the last
 good data in place rather than a page of zeros. Run it, commit whatever
 actually changed, then redraw.
 
-    python3 tools/refresh.py && python3 tools/make_assets.py
+    python3 refresh.py && python3 make_assets.py
 """
 
 import collections
 import datetime
 import json
+import os
 import subprocess
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+DATA = Path(__file__).resolve().parent / "data"
 OWNERS = ("varbees", "antharmaya")
+LOGIN = os.environ.get("PROFILE_LOGIN", "varbees")
 
+# user(login:) rather than viewer: in GitHub Actions the viewer is the workflow
+# bot, not the person whose calendar this page draws.
 CONTRIB_QUERY = """
-{
-  viewer {
+query($login: String!) {
+  user(login: $login) {
     contributionsCollection {
       contributionCalendar {
         totalContributions
@@ -32,12 +36,17 @@ CONTRIB_QUERY = """
 
 
 def gh(*args: str) -> str:
-    return subprocess.run(["gh", *args], capture_output=True, text=True).stdout
+    # Fail loudly: an empty answer must stop the run before anything is
+    # written, so the last good data stays in place.
+    proc = subprocess.run(["gh", *args], capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise SystemExit(f"gh {' '.join(args[:2])} failed: {proc.stderr.strip()[:300]}")
+    return proc.stdout
 
 
 def contributions() -> dict:
-    raw = json.loads(gh("api", "graphql", "-f", f"query={CONTRIB_QUERY}"))
-    cal = raw["data"]["viewer"]["contributionsCollection"]["contributionCalendar"]
+    raw = json.loads(gh("api", "graphql", "-f", f"query={CONTRIB_QUERY}", "-F", f"login={LOGIN}"))
+    cal = raw["data"]["user"]["contributionsCollection"]["contributionCalendar"]
     weeks = cal["weeks"]
     days = [d for w in weeks for d in w["contributionDays"]]
     today = datetime.date.today()

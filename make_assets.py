@@ -8,8 +8,8 @@ about dependencies should not have ten of them above the fold.
 
 So: plain SVG, written here, committed. GitHub serves it.
 
-    python3 tools/refresh.py     # pull fresh numbers from the GitHub API
-    python3 tools/make_assets.py # redraw
+    python3 refresh.py      # pull fresh numbers from the GitHub API
+    python3 make_assets.py  # redraw into profile/assets
 
 Fonts are the viewer's own monospace stack, because GitHub strips <style>
 blocks from README SVGs and a subsetted webfont is a lot of binary to carry
@@ -19,8 +19,8 @@ for a heading.
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "assets"
+ROOT = Path(__file__).resolve().parent
+OUT = ROOT / "profile" / "assets"
 DATA = ROOT / "data"
 
 W = 860
@@ -259,9 +259,6 @@ def main() -> None:
         T = palette
         sfx = f"-{theme}"
         (OUT / f"header{sfx}.svg").write_text(
-            banner("harshavardhan beesabathina", "systems and agent infrastructure · tirupati, india")
-        )
-        (OUT / f"header-antharmaya{sfx}.svg").write_text(
             banner("antharmaya labs", "agent and systems infrastructure · india")
         )
         for name in ("about", "stack", "projects", "stats"):

@@ -1,0 +1,39 @@
+name: refresh
+
+# Redraw the profile numbers from the GitHub API once a day. refresh.py exits
+# non-zero on any API failure, so a bad run leaves the last good data alone.
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Pull numbers
+        env:
+          # PROFILE_TOKEN (a read:user token of varbees, whose calendar this page draws) makes the
+          # calendar include private contributions, matching a local run.
+          # Without it the workflow token sees public contributions only.
+          GH_TOKEN: ${{ secrets.PROFILE_TOKEN || github.token }}
+        run: python3 refresh.py
+      - name: Redraw
+        run: python3 make_assets.py
+      - name: Commit if anything changed
+        run: |
+          git add data profile/assets
+          if git diff --cached --quiet; then
+            echo "no change"
+            exit 0
+          fi
+          git -c user.name=varbees -c user.email=harshavar968@gmail.com \
+            commit -m "chore: refresh profile numbers"
+          git push
