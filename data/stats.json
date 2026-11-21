@@ -473,8 +473,8 @@
    3,
    2,
    2,
+   2,
    1,
-   0,
    2
   ]
  ],
@@ -528,11 +528,11 @@
    "oct"
   ]
  ],
- "total": 1795,
- "active_days": 170,
+ "total": 1797,
+ "active_days": 171,
  "best_week": 145,
- "current_streak": 35,
- "longest_streak": 35,
+ "current_streak": 36,
+ "longest_streak": 36,
  "weekly": [
   87,
   132,
@@ -586,7 +586,7 @@
   14,
   15,
   47,
-  12
+  14
  ],
  "public_repos": 43
 }
