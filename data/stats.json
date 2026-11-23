@@ -461,21 +461,21 @@
   ],
   [
    2,
-   3,
-   2,
-   2,
-   2,
-   2,
+   38,
+   38,
+   48,
+   44,
+   57,
    2
   ],
   [
+   6,
    0,
    0,
    0,
    0,
    0,
-   0,
-   1
+   26
   ]
  ],
  "months": [
@@ -528,11 +528,11 @@
    "oct"
   ]
  ],
- "total": 1799,
- "active_days": 168,
- "best_week": 145,
- "current_streak": 37,
- "longest_streak": 37,
+ "total": 1957,
+ "active_days": 169,
+ "best_week": 229,
+ "current_streak": 38,
+ "longest_streak": 38,
  "weekly": [
   132,
   15,
@@ -585,8 +585,8 @@
   14,
   15,
   47,
-  15,
-  1
+  229,
+  32
  ],
  "public_repos": 43
 }
